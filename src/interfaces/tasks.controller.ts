@@ -9,6 +9,7 @@ import {
   Req,
   UseGuards,
 } from '@nestjs/common'
+import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger'
 import { SkipThrottle } from '@nestjs/throttler'
 import { Request } from 'express'
 import { TasksService } from 'src/applications/tasks/tasks.service'
@@ -18,12 +19,16 @@ import { FeatureFlagGuard } from 'src/infrastructure/guards/FeatureFlagGuard'
 import { Guard } from 'src/infrastructure/guards/Guard'
 
 @Controller('/tasks')
+@ApiBearerAuth()
+@ApiTags('TASKS')
 @UseGuards(Guard)
 @UseGuards(FeatureFlagGuard)
 export class TasksController {
   constructor(private tasks: TasksService) {}
 
   @Get()
+  @ApiQuery({ name: 'search', required: false })
+  @ApiQuery({ name: 'limit', required: false })
   @SkipThrottle()
   @FeatureFlag('findAll')
   findAll(@Query() query: ChatBodyQuery) {

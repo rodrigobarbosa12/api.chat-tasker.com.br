@@ -6,12 +6,15 @@ import {
   UnauthorizedException,
   UseGuards,
 } from '@nestjs/common'
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 import { Request } from 'express'
 import { FeatureFlagService } from 'src/applications/feature-flag/featureFlag.service'
 import { ToggleFeatureBody } from 'src/infrastructure/dtos/admin'
 import { Guard } from 'src/infrastructure/guards/Guard'
 
 @Controller('/admin')
+@ApiBearerAuth()
+@ApiTags('ADMIN')
 @UseGuards(Guard)
 export class AdminController {
   constructor(private featureFlagService: FeatureFlagService) {}

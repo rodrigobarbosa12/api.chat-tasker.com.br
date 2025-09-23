@@ -3,6 +3,7 @@ import {
   ExecutionContext,
   ForbiddenException,
   Injectable,
+  UnauthorizedException,
 } from '@nestjs/common'
 import { Reflector } from '@nestjs/core'
 import { FeatureFlagService } from 'src/applications/feature-flag/featureFlag.service'
@@ -25,7 +26,11 @@ export class FeatureFlagGuard implements CanActivate {
 
     const request = context.switchToHttp().getRequest()
     const authorization = request?.headers?.authorization
-    const token = authorization.split(' ')[1]
+    const token = authorization?.split(' ')[1]
+
+    if (!token) {
+      throw new UnauthorizedException('Você não está autorizado(a)')
+    }
 
     const { payload } = getPayload(token)
     const userId = payload.user.id

@@ -7,20 +7,20 @@ export enum FeatureRole {
 }
 
 export class ToggleFeatureBody {
-  @ApiProperty()
+  @ApiProperty({ example: true })
   @IsNotEmpty({
     message: 'enable é obrigatório',
   })
   enable: boolean
 
-  @ApiProperty()
+  @ApiProperty({ example: 'findAll' })
   @IsNotEmpty({
     message: 'feature é obrigatória',
   })
   @IsEnum(FeatureRole, { message: 'accessRole deve ser admin ou default' })
   feature: 'findAll' | 'findOne'
 
-  @ApiProperty()
+  @ApiProperty({ example: 1 })
   @IsNotEmpty({
     message: 'usersId é obrigatório',
   })

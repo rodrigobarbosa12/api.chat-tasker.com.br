@@ -3,8 +3,8 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 
 export function useSwagger(app: INestApplication) {
   const config = new DocumentBuilder()
-    .setTitle('Api docs')
-    .setDescription('Teste da api sem precisar do postman ou insomnia')
+    .setTitle('Chat Tasker')
+    .setDescription('Documentação da API')
     .setVersion('1.0')
     .addBearerAuth()
     .build()
