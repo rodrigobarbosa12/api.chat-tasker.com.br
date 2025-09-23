@@ -1,0 +1,35 @@
+version: '3.9'
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: api.gastebem.com.br
+    ports:
+      - '4006:4006'
+
+    environment:
+      - PORT_SERVER
+      - HOST_DB
+      - PORT_DB
+      - USER_DB
+      - PASSWORD_DB
+      - DATABASE_DB
+      - JWT_SECRET
+
+    networks:
+      - pg-network
+
+  db:
+    image: ankane/pgvector:latest
+    environment:
+      POSTGRES_USER: pg-vector
+      POSTGRES_PASSWORD: Leggal@123
+      POSTGRES_DB: leggal
+    networks:
+      - pg-network
+
+networks:
+  pg-network:
+    driver: bridge
