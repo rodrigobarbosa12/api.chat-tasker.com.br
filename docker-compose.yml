@@ -1,32 +1,47 @@
-version: '3.9'
+version: "3.9"
 
 services:
   api:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: api.gastebem.com.br
+    container_name: task-manager-api
     ports:
-      - '4006:4006'
-
+      - "4007:4007"
     environment:
-      - PORT_SERVER
-      - HOST_DB
-      - PORT_DB
-      - USER_DB
-      - PASSWORD_DB
-      - DATABASE_DB
-      - JWT_SECRET
-
+      - PORT_SERVER=4007
+      - HOST_DB=db
+      - PORT_DB=5432
+      - USER_DB=pg-vector
+      - PASSWORD_DB=Abc@123
+      - DATABASE_DB=task_manager
+      - JWT_SECRET=GsfhiSDFssFSDrglksf
+      - OPENAI_API_KEY={{API_KEY}}
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    depends_on:
+      - db
+      - redis
     networks:
       - pg-network
+    command: >
+      sh -c "npm run migration && npm run start:prod"
 
   db:
     image: ankane/pgvector:latest
+    container_name: db.task-manager-api
     environment:
       POSTGRES_USER: pg-vector
-      POSTGRES_PASSWORD: Leggal@123
-      POSTGRES_DB: leggal
+      POSTGRES_PASSWORD: Abc@123
+      POSTGRES_DB: task_manager
+    networks:
+      - pg-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: redis.task-manager-api
+    ports:
+      - "6379:6379"
     networks:
       - pg-network
 

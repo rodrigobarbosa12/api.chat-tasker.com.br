@@ -14,7 +14,7 @@
   - Geração automática de título/descrição resumida (smartização).
   - Busca semântica usando embeddings para encontrar tarefas similares.
   - Priorização sugerida com probabilidade de urgência/impacto e explicação curta.
-- **Interface Web (UI)**
+- **Interface Web (UI)** ✅
   - Login e autenticação.
   - Lista de tarefas com filtros, busca e paginação.
   - Exibir prioridade e justificativa da IA.
