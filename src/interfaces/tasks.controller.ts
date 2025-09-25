@@ -31,8 +31,10 @@ export class TasksController {
   @ApiQuery({ name: 'limit', required: false })
   @SkipThrottle()
   @FeatureFlag('findAll')
-  findAll(@Query() query: ChatBodyQuery) {
-    return this.tasks.findAll(query?.search, query?.limit)
+  findAll(@Query() query: ChatBodyQuery, @Req() req: Request) {
+    const { userId } = req.session
+
+    return this.tasks.findAll(userId, query?.search, query?.limit)
   }
 
   @Get('/:id')

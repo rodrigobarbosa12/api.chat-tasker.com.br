@@ -22,7 +22,7 @@ export class TasksService {
     const embedding = await this.ai.embed(text)
 
     const task = this.taskRepository.create({
-      user: { id: userId } as any,
+      userId: { id: userId } as any,
       originalText: text,
       title,
       description,
@@ -69,7 +69,7 @@ export class TasksService {
     })
   }
 
-  async findAll(search?: string, limit = 10) {
+  async findAll(userId: number, search?: string, limit = 10) {
     const qb = this.taskRepository.createQueryBuilder('task')
 
     qb.select([
@@ -82,6 +82,7 @@ export class TasksService {
       'task.createdAt',
     ])
 
+    qb.where('task.userId = :userId', { userId })
     qb.limit(limit)
 
     if (search) {

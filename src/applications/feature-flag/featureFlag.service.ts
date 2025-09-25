@@ -15,16 +15,17 @@ export class FeatureFlagService {
   }
 
   async isEnabled(feature: string, userId?: string): Promise<boolean> {
-    const globalFlag = await this.redis.get(`feature:${feature}:global`)
-    if (globalFlag === 'true') return true
-
     if (userId) {
       const userFlag = await this.redis.sismember(
         `feature:${feature}:users`,
         userId,
       )
+
       return userFlag === 1
     }
+
+    const globalFlag = await this.redis.get(`feature:${feature}:global`)
+    if (globalFlag === 'true') return true
 
     return false
   }
