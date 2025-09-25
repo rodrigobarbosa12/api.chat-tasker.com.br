@@ -34,7 +34,15 @@ export class TasksService {
       updatedBy: userId,
     })
 
+    const response = await this.ai.responseForUser(task)
+
     await this.taskRepository.save(task)
+
+    return {
+      text: response,
+      time: task.createdAt,
+      isUser: false,
+    }
   }
 
   async updateTask(id: number, text: string, userId: number) {
@@ -71,6 +79,7 @@ export class TasksService {
       'task.status',
       'task.priority',
       'task.priorityExplain',
+      'task.createdAt',
     ])
 
     qb.limit(limit)

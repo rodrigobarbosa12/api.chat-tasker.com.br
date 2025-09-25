@@ -1,3 +1,4 @@
+import { UnauthorizedException } from '@nestjs/common'
 import { decode, type JwtPayload } from 'jsonwebtoken'
 
 export type CustomPayload = JwtPayload & {
@@ -21,7 +22,7 @@ export function getPayload(token: string): Result {
   const tokenDecoded = decode(token, { complete: true })
 
   if (!tokenDecoded) {
-    return null
+    throw new UnauthorizedException('Você não está autorizado(a)')
   }
 
   const payload = tokenDecoded.payload as CustomPayload

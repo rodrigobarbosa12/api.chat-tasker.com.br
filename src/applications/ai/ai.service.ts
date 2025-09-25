@@ -89,6 +89,28 @@ export class AiService {
     return result
   }
 
+  async responseForUser<T>(data: T): Promise<string> {
+    const prompt = ChatPromptTemplate.fromMessages([
+      SystemMessagePromptTemplate.fromTemplate(
+        'Você é um assistente humano extremamente simpatico que está respondendo usuários via chat.',
+      ),
+      HumanMessagePromptTemplate.fromTemplate(
+        `Dados: {data}
+
+        O usuário acabou de te pedir para criar uma tarefa e você fez, responda positivamente para ele
+        `,
+      ),
+    ])
+
+    const chain = RunnableSequence.from([
+      prompt,
+      this.llmOpenAILC,
+      new StringOutputParser(),
+    ])
+
+    return await chain.invoke({ data })
+  }
+
   async prioritize(task: Task): Promise<PrioritizeResp> {
     const { cached, key } = await this.getCacheRedis<PrioritizeResp>(
       'prioritize',

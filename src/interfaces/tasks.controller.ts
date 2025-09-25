@@ -44,7 +44,7 @@ export class TasksController {
   async create(@Body() body: { text: string }, @Req() req: Request) {
     const { userId } = req.session
 
-    await this.tasks.createTask(body.text, userId)
+    return await this.tasks.createTask(body.text, userId)
   }
 
   @Put('/:id')
