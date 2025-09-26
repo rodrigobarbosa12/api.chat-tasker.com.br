@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common'
 import { Reflector } from '@nestjs/core'
 import { FeatureFlagService } from 'src/applications/feature-flag/featureFlag.service'
-import { FEATURE_FLAG_KEY } from '../decorators/feature-flag'
+import { FEATURE_FLAG_KEY } from '../decorators/feature-flag-verify'
 import { getPayload } from '../utils'
 
 @Injectable()

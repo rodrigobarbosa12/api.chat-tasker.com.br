@@ -13,7 +13,7 @@ import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger'
 import { SkipThrottle } from '@nestjs/throttler'
 import { Request } from 'express'
 import { TasksService } from 'src/applications/tasks/tasks.service'
-import { FeatureFlag } from 'src/infrastructure/decorators/feature-flag'
+import { FeatureFlagVerify } from 'src/infrastructure/decorators/feature-flag-verify'
 import { ChatBodyQuery } from 'src/infrastructure/dtos/chat'
 import { FeatureFlagGuard } from 'src/infrastructure/guards/FeatureFlagGuard'
 import { Guard } from 'src/infrastructure/guards/Guard'
@@ -30,7 +30,7 @@ export class TasksController {
   @ApiQuery({ name: 'search', required: false })
   @ApiQuery({ name: 'limit', required: false })
   @SkipThrottle()
-  @FeatureFlag('findAll')
+  @FeatureFlagVerify('findAll')
   findAll(@Query() query: ChatBodyQuery, @Req() req: Request) {
     const { userId } = req.session
 
@@ -38,6 +38,7 @@ export class TasksController {
   }
 
   @Get('/:id')
+  @FeatureFlagVerify('findOne')
   findOne(@Param('id') id: string) {
     return this.tasks.findOne(+id)
   }

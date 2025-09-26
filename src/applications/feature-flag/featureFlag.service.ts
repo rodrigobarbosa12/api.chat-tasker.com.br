@@ -16,35 +16,35 @@ export class FeatureFlagService {
 
   async isEnabled(feature: string, userId?: string): Promise<boolean> {
     if (userId) {
-      const userFlag = await this.redis.sismember(
-        `feature:${feature}:users`,
+      const isDisabled = await this.redis.sismember(
+        `feature:${feature}:disabled:users`,
         userId,
       )
 
-      return userFlag === 1
+      return isDisabled === 0
     }
 
     const globalFlag = await this.redis.get(`feature:${feature}:global`)
-    if (globalFlag === 'true') return true
+    if (globalFlag === 'false') return false
 
     return true
   }
 
-  async enableFeature(feature: 'findAll' | 'findOne', userId?: number) {
-    if (userId) {
-      await this.redis.sadd(`feature:${feature}:users`, userId)
-      return
-    }
-
-    await this.redis.set(`feature:${feature}:global`, 'true')
-  }
-
   async disableFeature(feature: string, userId?: number) {
     if (userId) {
-      await this.redis.srem(`feature:${feature}:users`, userId)
+      await this.redis.sadd(`feature:${feature}:disabled:users`, userId)
       return
     }
 
     await this.redis.set(`feature:${feature}:global`, 'false')
+  }
+
+  async enableFeature(feature: string, userId?: number) {
+    if (userId) {
+      await this.redis.srem(`feature:${feature}:disabled:users`, userId)
+      return
+    }
+
+    await this.redis.set(`feature:${feature}:global`, 'true')
   }
 }
