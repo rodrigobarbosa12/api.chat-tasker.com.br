@@ -1,6 +1,77 @@
-# Checklist Completo do Projeto — Mini-Produto de Tarefas com IA
+# Chat Task Manager
 
-## 1️⃣ Requisitos Funcionais
+Chat Task Manager é um sistema de organização inteligente que utiliza **Inteligência Artificial** para estruturar tarefas, gerenciar informações e otimizar fluxos de trabalho.
+O objetivo do projeto é transformar entradas desorganizadas (como mensagens ou anotações livres) em dados estruturados, prontos para análise e execução.
+
+---
+
+## 🔗 URLs Importantes
+
+Para facilitar o acesso a métricas, documentação e deploy, seguem as URLs principais do projeto **Chat Task Manager**:
+
+- **Métricas:** [https://api.nimblefast.com.br/metrics](https://api.nimblefast.com.br/metrics)
+- **Documentação do Swagger:** [https://api.nimblefast.com.br/docs](https://api.nimblefast.com.br/docs)
+- **Coverage do teste unitário:** [https://api.nimblefast.com.br/coverage](https://api.nimblefast.com.br/coverage)
+- **URL do deploy/CI:** [https://github.com/rodrigobarbosa12/api.chat-tasker.com.br/actions](https://github.com/rodrigobarbosa12/api.chat-tasker.com.br/actions)
+
+---
+
+## 🚀 Tecnologias Utilizadas
+
+- **Node.js / NestJS** → Framework backend para APIs escaláveis.
+- **TypeScript** → Tipagem estática para maior confiabilidade do código.
+- **PostgreSQL + pgvector** → Banco relacional com suporte a vetores para IA.
+- **Redis** → Cache para otimizar desempenho e reduzir chamadas redundantes.
+- **Docker & Docker Compose** → Conteinerização e orquestração de serviços.
+- **IA / NLP** → Estratégias de processamento de linguagem natural para:
+  - Resumir e organizar informações.
+  - Gerar títulos e descrições automáticas.
+  - Classificar dados de entrada.
+
+---
+
+## 📂 Estrutura de Decisões
+
+As principais decisões de arquitetura e estratégia estão documentadas em **DECISIONS.md**, garantindo rastreabilidade e clareza ao longo da evolução do projeto.
+
+---
+
+## 🤖 Estratégias de IA
+
+1. **Extração de dados**: o sistema identifica informações relevantes em textos não estruturados.
+2. **Classificação**: categorização automática em tarefas, lembretes ou insights.
+3. **Geração**: criação de descrições curtas e títulos automáticos.
+4. **Otimização**: cache inteligente em Redis para evitar repetições desnecessárias de processamento de IA.
+
+---
+
+## 🐳 Execução com Docker
+
+1. Clone o repositório:
+
+   ```bash
+   git clone https://github.com/rodrigobarbosa12/api.chat-tasker.com.br.git
+   cd api.chat-tasker.com.br
+   ```
+
+2. Inicie os containers:
+
+   ```bash
+   docker compose up -d
+   ```
+
+3. Acesse a API em:
+   [http://localhost:4006](http://localhost:4006)
+
+---
+
+## 📌 Objetivo
+
+Criar uma base sólida de **organização assistida por IA**, facilitando o gerenciamento de informações no dia a dia de empresas e usuários.
+
+## Checklist Completo do Projeto
+
+### 1️⃣ Requisitos Funcionais
 
 - **Autenticação** ✅
   - JWT ou OAuth2 para login seguro.
@@ -19,7 +90,7 @@
   - Lista de tarefas com filtros, busca e paginação.
   - Exibir prioridade e justificativa da IA.
 
-## 2️⃣ Requisitos Não Funcionais
+### 2️⃣ Requisitos Não Funcionais
 
 - **Qualidade do código** ✅
   - Arquitetura organizada.
@@ -41,7 +112,7 @@
 - **Auditoria mínima** ✅
   - Registrar quem criou/atualizou cada tarefa e quando.
 
-## 3️⃣ IA — Especificações mínimas
+### 3️⃣ IA — Especificações mínimas
 
 - **Smartização** ✅
   - Resumir texto livre em título/descrição curta.
@@ -53,7 +124,7 @@
 - **Documentação do setup**
   - Explicar uso local ou via APIs externas (ex.: OpenAI).
 
-## 4️⃣ Bônus (Opcional)
+### 4️⃣ Bônus (Opcional)
 
 - **CI/CD** ✅
   - Pipeline automatizado para build/test/deploy.
@@ -66,29 +137,3 @@
   - Métricas básicas, logs, healthcheck.
 - **RBAC (Role-Based Access Control)** ✅
   - Controle de acesso baseado em função (admin, usuário normal, etc).
-
-## Criar migration
-
-    npm run typeorm migration:create src/infrastructure/typeorm/migrations/table-name
-
-## Executar a migration
-
-    npm run typeorm migration:run -- -d dist/infrastructure/typeorm/database.providers.js
-
-## Run docker-compose
-
-    docker-compose -f docker-compose.local.yml up --build
-
-# Docker
-
-#### Cria a imagem
-
-    docekr compose build
-
-#### Roda os containers
-
-    docker compose up -d
-
-#### Ver IP do container
-
-    docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' CONTAINER_ID
