@@ -35,29 +35,45 @@ describe('FeatureFlagService', () => {
 
   it('should enable and disable feature for a user', async () => {
     await service.enableFeature('findAll', 1)
-    expect(redisMock.sadd).toHaveBeenCalledWith('feature:findAll:users', 1)
+    expect(redisMock.srem).toHaveBeenCalledWith(
+      'feature:findAll:disabled:users',
+      1,
+    )
 
     await service.disableFeature('findAll', 1)
-    expect(redisMock.srem).toHaveBeenCalledWith('feature:findAll:users', 1)
+    expect(redisMock.sadd).toHaveBeenCalledWith(
+      'feature:findAll:disabled:users',
+      1,
+    )
   })
 
-  it('should return true if global flag is enabled', async () => {
+  it('should return true by default for a new user (not in disabled set)', async () => {
+    redisMock.sismember.mockResolvedValue(0) // user not in disabled
+    const result = await service.isEnabled('findAll', '123')
+    expect(result).toBe(true)
+  })
+
+  it('should return false if user is in disabled set', async () => {
+    redisMock.sismember.mockResolvedValue(1) // user IS disabled
+    const result = await service.isEnabled('findAll', '123')
+    expect(result).toBe(false)
+  })
+
+  it('should return false if global flag is false', async () => {
+    redisMock.get.mockResolvedValue('false')
+    const result = await service.isEnabled('findAll')
+    expect(result).toBe(false)
+  })
+
+  it('should return true if global flag is true', async () => {
     redisMock.get.mockResolvedValue('true')
     const result = await service.isEnabled('findAll')
     expect(result).toBe(true)
   })
 
-  it('should return true if user flag is enabled', async () => {
+  it('should return true if global flag is not set (default true)', async () => {
     redisMock.get.mockResolvedValue(null)
-    redisMock.sismember.mockResolvedValue(1)
-    const result = await service.isEnabled('findAll', '1')
+    const result = await service.isEnabled('findAll')
     expect(result).toBe(true)
-  })
-
-  it('should return false if no flags are enabled', async () => {
-    redisMock.get.mockResolvedValue('false')
-    redisMock.sismember.mockResolvedValue(0)
-    const result = await service.isEnabled('findAll', '1')
-    expect(result).toBe(false)
   })
 })
