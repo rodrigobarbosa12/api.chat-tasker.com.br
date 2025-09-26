@@ -55,7 +55,7 @@
 
 ## 4️⃣ Bônus (Opcional)
 
-- **CI/CD**
+- **CI/CD** ✅
   - Pipeline automatizado para build/test/deploy.
 - **Feature flags** ✅
   - Habilitar ou desabilitar funcionalidades sem redeploy.

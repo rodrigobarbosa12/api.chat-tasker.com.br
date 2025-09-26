@@ -27,7 +27,7 @@ export class FeatureFlagService {
     const globalFlag = await this.redis.get(`feature:${feature}:global`)
     if (globalFlag === 'true') return true
 
-    return false
+    return true
   }
 
   async enableFeature(feature: 'findAll' | 'findOne', userId?: number) {
