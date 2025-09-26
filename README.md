@@ -1,4 +1,4 @@
-# Chat Task Manager
+# 💬 Chat Task Manager
 
 Chat Task Manager é um sistema de organização inteligente que utiliza **Inteligência Artificial** para estruturar tarefas, gerenciar informações e otimizar fluxos de trabalho.
 O objetivo do projeto é transformar entradas desorganizadas (como mensagens ou anotações livres) em dados estruturados, prontos para análise e execução.
