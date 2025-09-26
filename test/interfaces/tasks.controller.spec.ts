@@ -13,7 +13,7 @@ describe('TasksController', () => {
   const mockTasksService = {
     findAll: jest.fn().mockResolvedValue([mockTask]),
     findOne: jest.fn().mockResolvedValue(mockTask),
-    createTask: jest.fn().mockResolvedValue(undefined),
+    createTask: jest.fn().mockResolvedValue({ text: 'ok' }),
     updateTask: jest.fn().mockResolvedValue(undefined),
   }
 
@@ -36,9 +36,11 @@ describe('TasksController', () => {
 
   it('deve retornar todas as tarefas (findAll)', async () => {
     const query = { search: 'Parto', limit: 5 }
-    const result = await controller.findAll(query)
+    const req = { session: { userId: 42 } } as unknown as Request
 
-    expect(service.findAll).toHaveBeenCalledWith('Parto', 5)
+    const result = await controller.findAll(query, req)
+
+    expect(service.findAll).toHaveBeenCalledWith(42, 'Parto', 5)
     expect(result).toEqual([mockTask])
   })
 
@@ -53,16 +55,18 @@ describe('TasksController', () => {
     const req = { session: { userId: 123 } } as unknown as Request
     const body = { text: 'Nova tarefa' }
 
-    await controller.create(body, req)
+    const result = await controller.create(body, req)
 
     expect(service.createTask).toHaveBeenCalledWith('Nova tarefa', 123)
+    expect(result).toEqual({ text: 'ok' })
   })
 
   it('deve atualizar uma tarefa existente (update)', async () => {
     const body = { text: 'Atualizar tarefa' }
 
-    await controller.update(1, body)
+    const result = await controller.update(1, body)
 
     expect(service.updateTask).toHaveBeenCalledWith(1, 'Atualizar tarefa', 1)
+    expect(result).toBeUndefined() // garante cobertura de return void
   })
 })

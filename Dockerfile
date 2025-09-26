@@ -6,6 +6,9 @@ WORKDIR /app
 COPY . .
 
 RUN npm ci
+
+RUN npm run test:cov
+
 RUN npm run build
 
 # Fase de produção

@@ -1,3 +1,4 @@
+import { UnauthorizedException } from '@nestjs/common'
 import { decode } from 'jsonwebtoken'
 import { getPayload, Result } from 'src/infrastructure/utils'
 
@@ -6,11 +7,10 @@ jest.mock('jsonwebtoken', () => ({
 }))
 
 describe('getPayload', () => {
-  it('deve retornar null se decode retornar null', () => {
+  it('deve lançar UnauthorizedException se decode retornar null', () => {
     ;(decode as jest.Mock).mockReturnValue(null)
 
-    const result = getPayload('token123')
-    expect(result).toBeNull()
+    expect(() => getPayload('token123')).toThrow(UnauthorizedException)
   })
 
   it('deve mapear corretamente o payload do token', () => {
