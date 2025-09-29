@@ -15,6 +15,7 @@ import { Request } from 'express'
 import { TasksService } from 'src/applications/tasks/tasks.service'
 import { FeatureFlagVerify } from 'src/infrastructure/decorators/feature-flag-verify'
 import { ChatBodyQuery } from 'src/infrastructure/dtos/chat'
+import { TaskBody } from 'src/infrastructure/dtos/task'
 import { FeatureFlagGuard } from 'src/infrastructure/guards/FeatureFlagGuard'
 import { Guard } from 'src/infrastructure/guards/Guard'
 
@@ -44,14 +45,14 @@ export class TasksController {
   }
 
   @Post()
-  async create(@Body() body: { text: string }, @Req() req: Request) {
+  async create(@Body() body: TaskBody, @Req() req: Request) {
     const { userId } = req.session
 
     return await this.tasks.createTask(body.text, userId)
   }
 
   @Put('/:id')
-  async update(@Param('id') id: number, @Body() body: { text: string }) {
+  async update(@Param('id') id: number, @Body() body: TaskBody) {
     const usersId = 1
 
     await this.tasks.updateTask(id, body.text, usersId)
